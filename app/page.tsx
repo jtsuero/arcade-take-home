@@ -1,29 +1,8 @@
 "use client";
 
 import Button from "./components/Button";
-
-const CARD_COLORS = {
-	red: "#FF6B6B",
-	orange: "#FFA94D",
-	yellow: "#FFD43B",
-	green: "#69DB7C",
-	teal: "#38D9A9",
-	cyan: "#4DABF7",
-	blue: "#748FFC",
-	indigo: "#9775FA",
-	pink: "#F783AC",
-	gray: "#CED4DA",
-} as const;
-
-type ColorName = keyof typeof CARD_COLORS;
-
-interface Card {
-	id: number;
-	title: string;
-	description: string | null;
-	fillColor: ColorName;
-	createdAt: string;
-}
+import { Card } from "@/lib/types";
+import { CARD_COLORS } from "@/lib/types";
 
 const dummyCards: Card[] = [
 	{
