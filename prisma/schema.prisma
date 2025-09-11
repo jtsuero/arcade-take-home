@@ -10,7 +10,7 @@ datasource db {
 
 model Card {
   id          Int      @id @default(autoincrement())
-  title       String   @unique
+  title       String
   description String?
   fillColor   String
   createdAt   DateTime @default(now())
