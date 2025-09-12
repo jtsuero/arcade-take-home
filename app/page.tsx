@@ -2,11 +2,14 @@
 
 import Button from "./components/Button";
 import { Card } from "@/lib/types";
-import { CARD_COLORS } from "@/lib/types";
 import { useEffect, useState } from "react";
+import CardComponent from "./components/CardComponent";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 	const [cards, setCards] = useState<Card[]>([]);
+	const router = useRouter();
 
 	useEffect(() => {
 		fetchCards();
@@ -16,6 +19,29 @@ export default function Home() {
 		const res = await fetch("/api/cards");
 		const data = await res.json();
 		setCards(data);
+	};
+
+	const handleDelete = async (id: number) => {
+		try {
+			const res = await fetch(`/api/cards/${id}`, {
+				method: "DELETE",
+			});
+
+			if (res.ok) {
+				setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+				toast.success("Card deleted successfully");
+			} else {
+				console.error("Failed to delete card");
+				toast.error("Failed to delete card");
+			}
+		} catch (error) {
+			console.error("Network error:", error);
+			toast.error("Network error");
+		}
+	};
+
+	const handleEdit = async (id: number) => {
+		router.push(`/cards/${id}/edit`);
 	};
 
 	return (
@@ -29,15 +55,12 @@ export default function Home() {
 			<div>
 				<div>Cards</div>
 				{cards.map((card) => (
-					<div
+					<CardComponent
 						key={card.id}
-						className='flex flex-col gap-2 p-4 rounded-lg'
-						style={{ backgroundColor: CARD_COLORS[card.fillColor] }}
-					>
-						<div>{card.title}</div>
-						<div>{card.description}</div>
-						<div>{card.createdAt}</div>
-					</div>
+						card={card}
+						onDelete={handleDelete}
+						onEdit={handleEdit}
+					/>
 				))}
 			</div>
 		</div>
