@@ -15,6 +15,7 @@ export default function Home() {
 	const [sortField, setSortField] = useState<SortField>("title");
 	const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 	const [filterColor, setFilterColor] = useState<ColorName | "all">("all");
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -53,12 +54,10 @@ export default function Home() {
 	const filteredAndSortedCards = useMemo(() => {
 		let filtered = cards;
 
-		// Filter by color
 		if (filterColor !== "all") {
 			filtered = cards.filter((card) => card.fillColor === filterColor);
 		}
 
-		// Sort cards
 		return filtered.sort((a, b) => {
 			const aValue = sortField === "title" ? a.title : a.description || "";
 			const bValue = sortField === "title" ? b.title : b.description || "";
@@ -110,18 +109,73 @@ export default function Home() {
 			<label className='text-sm font-medium text-gray-700'>
 				Filter by color:
 			</label>
-			<select
-				value={filterColor}
-				onChange={(e) => setFilterColor(e.target.value as ColorName | "all")}
-				className='px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
-			>
-				<option value='all'>All Colors</option>
-				{Object.keys(CARD_COLORS).map((color) => (
-					<option key={color} value={color}>
-						{color.charAt(0).toUpperCase() + color.slice(1)}
-					</option>
-				))}
-			</select>
+			<div className='relative'>
+				<button
+					onClick={() => setIsFilterOpen(!isFilterOpen)}
+					className='flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white hover:bg-gray-50'
+				>
+					{filterColor === "all" ? (
+						<>
+							<span>All Colors</span>
+						</>
+					) : (
+						<>
+							<div
+								className='w-4 h-4 rounded border border-gray-300'
+								style={{ backgroundColor: CARD_COLORS[filterColor] }}
+							></div>
+							<span>
+								{filterColor.charAt(0).toUpperCase() + filterColor.slice(1)}
+							</span>
+						</>
+					)}
+					<svg
+						className='w-4 h-4'
+						fill='none'
+						stroke='currentColor'
+						viewBox='0 0 24 24'
+					>
+						<path
+							strokeLinecap='round'
+							strokeLinejoin='round'
+							strokeWidth={2}
+							d='M19 9l-7 7-7-7'
+						/>
+					</svg>
+				</button>
+
+				{isFilterOpen && (
+					<div className='absolute top-full left-0 mt-1 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10'>
+						<button
+							onClick={() => {
+								setFilterColor("all");
+								setIsFilterOpen(false);
+							}}
+							className='w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-50 text-sm'
+						>
+							<span>All Colors</span>
+						</button>
+						{Object.entries(CARD_COLORS).map(([colorName, colorValue]) => (
+							<button
+								key={colorName}
+								onClick={() => {
+									setFilterColor(colorName as ColorName);
+									setIsFilterOpen(false);
+								}}
+								className='w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-50 text-sm'
+							>
+								<div
+									className='w-4 h-4 rounded border border-gray-300'
+									style={{ backgroundColor: colorValue }}
+								></div>
+								<span>
+									{colorName.charAt(0).toUpperCase() + colorName.slice(1)}
+								</span>
+							</button>
+						))}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 
