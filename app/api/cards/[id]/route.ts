@@ -9,11 +9,11 @@ async function findCardById(id: number) {
 
 export async function GET(
 	request: NextRequest,
-	{ params }: { params: Promise<{ id: string }> }
+	context: { params: Promise<{ id: string }> }
 ) {
 	try {
-		const { id: idString } = await params;
-		const id = parseInt(idString);
+		const params = await context.params;
+		const id = parseInt(params.id);
 
 		if (isNaN(id)) {
 			return NextResponse.json({ error: "Invalid card ID" }, { status: 400 });
@@ -37,11 +37,11 @@ export async function GET(
 
 export async function PUT(
 	request: NextRequest,
-	{ params }: { params: Promise<{ id: string }> }
+	context: { params: Promise<{ id: string }> }
 ) {
 	try {
-		const { id: idString } = await params;
-		const id = parseInt(idString);
+		const params = await context.params;
+		const id = parseInt(params.id);
 
 		if (isNaN(id)) {
 			return NextResponse.json({ error: "Invalid card ID" }, { status: 400 });
@@ -84,11 +84,11 @@ export async function PUT(
 
 export async function DELETE(
 	request: NextRequest,
-	{ params }: { params: Promise<{ id: string }> }
+	context: { params: Promise<{ id: string }> }
 ) {
 	try {
-		const { id: idString } = await params;
-		const id = parseInt(idString);
+		const params = await context.params;
+		const id = parseInt(params.id);
 
 		if (isNaN(id)) {
 			return NextResponse.json({ error: "Invalid card ID" }, { status: 400 });
