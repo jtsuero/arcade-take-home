@@ -88,7 +88,7 @@ export default function CardForm({
 					<form onSubmit={handleSubmit} className='space-y-6'>
 						<div>
 							<label className='block text-sm font-medium text-gray-700 mb-2'>
-								Title *
+								Title <span className='text-red-500'>*</span>
 							</label>
 							<input
 								type='text'
@@ -115,7 +115,7 @@ export default function CardForm({
 
 						<div>
 							<label className='block text-sm font-medium text-gray-700 mb-2'>
-								Fill Color *
+								Fill Color <span className='text-red-500'>*</span>
 							</label>
 							<div className='grid grid-cols-2 gap-3'>
 								{colorOptions.map((option) => (
