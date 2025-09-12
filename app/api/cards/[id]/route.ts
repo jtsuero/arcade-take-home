@@ -7,9 +7,11 @@ async function findCardById(id: number) {
 	});
 }
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(
+	request: NextRequest,
+	{ params }: { params: { id: string } }
+) {
 	try {
-		console.log(params);
 		const id = parseInt(params.id);
 
 		if (isNaN(id)) {
@@ -78,7 +80,10 @@ export async function PUT(
 	}
 }
 
-export async function DELETE({ params }: { params: { id: string } }) {
+export async function DELETE(
+	request: NextRequest,
+	{ params }: { params: { id: string } }
+) {
 	try {
 		const id = parseInt(params.id);
 
