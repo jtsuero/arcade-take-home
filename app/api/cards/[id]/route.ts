@@ -9,10 +9,9 @@ async function findCardById(id: number) {
 
 export async function GET(
 	request: NextRequest,
-	context: { params: Promise<{ id: string }> }
+	{ params }: { params: { id: string } }
 ) {
 	try {
-		const params = await context.params;
 		const id = parseInt(params.id);
 
 		if (isNaN(id)) {
@@ -37,10 +36,9 @@ export async function GET(
 
 export async function PUT(
 	request: NextRequest,
-	context: { params: Promise<{ id: string }> }
+	{ params }: { params: { id: string } }
 ) {
 	try {
-		const params = await context.params;
 		const id = parseInt(params.id);
 
 		if (isNaN(id)) {
@@ -84,10 +82,9 @@ export async function PUT(
 
 export async function DELETE(
 	request: NextRequest,
-	context: { params: Promise<{ id: string }> }
+	{ params }: { params: { id: string } }
 ) {
 	try {
-		const params = await context.params;
 		const id = parseInt(params.id);
 
 		if (isNaN(id)) {
